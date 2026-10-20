@@ -1,0 +1,107 @@
+@startuml A_CUC_R4_R7
+' Diagrama de Casos de Uso Contextual (CUC) — R4 y R7 y los directamente implicados
+' Derivado de Dorfman Fase 1 (hoja "Dorfman F1" de reques.xlsx): cada CU lleva el ID del RF atómico.
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor White
+  BorderColor #333333
+}
+skinparam actor {
+  BorderColor #333333
+}
+skinparam actor<<dispositivo>> {
+  BackgroundColor #FFE9C7
+  BorderColor #B26B00
+}
+
+' ---------- Actores humanos ----------
+actor "Operador del COD\n(ingeniero operador)" as OP
+actor "Analista de pérdidas" as AN
+actor "Administrador del sistema" as AD
+
+' ---------- Actores dispositivo (externos) ----------
+actor "Smart Meter" as SM <<dispositivo>>
+actor "Macromedidor" as MM <<dispositivo>>
+actor "Terminal de Campo" as TC <<dispositivo>>
+
+rectangle "Plataforma de Telemetría y Análisis de la Red Eléctrica (mqAMI-COD)" {
+
+  package "D4 Monitoreo Georreferenciado" {
+    usecase "CU-01 Visualizar mapa\ngeorreferenciado de la red\n(R4.1)" as CU01
+    usecase "CU-02 Mostrar estado de\ntransformadores y circuitos\n(R4.2)" as CU02
+    usecase "CU-03 Actualizar mapa\nen tiempo real (R4.3)" as CU03
+    usecase "CU-04 Ver zonas y circuitos\nasignados (R9.1)" as CU04
+    usecase "CU-05 Ver transformadores y\nmedidores del circuito (R9.2)" as CU05
+  }
+
+  package "D5 Analítica de Balance y Pérdidas" {
+    usecase "CU-06 Estimar balance de\nenergía mensual (R7.1)" as CU06
+    usecase "CU-07 Seleccionar año\ndel piloto (R7.6)" as CU07
+    usecase "CU-08 Totalizar energía\ninyectada (R7.2)" as CU08
+    usecase "CU-09 Totalizar energía\nconsumida (R7.3)" as CU09
+    usecase "CU-10 Calcular % de pérdidas\nno técnicas (R7.4)" as CU10
+    usecase "CU-11 Agregar balance\npor circuito (R7.5)" as CU11
+  }
+
+  package "D1 Ingesta y Telemetría AMI" {
+    usecase "CU-12 Recibir datagrama\nde telemetría AMI (R6.1)" as CU12
+    usecase "CU-13 Extraer campos del\ndatagrama (R12.1)" as CU13
+    usecase "CU-14 Persistir\ntelemetría (R6.2)" as CU14
+    usecase "CU-15 Combinar histórico\ny tiempo real (R6.3)" as CU15
+  }
+
+  package "D2 Eventos y D3 Operación de Campo" {
+    usecase "CU-16 Clasificar y priorizar\nevento de red (R1.1, R1.2)" as CU16
+    usecase "CU-17 Reportar evento\nde campo (R1.7)" as CU17
+    usecase "CU-18 Aplicar categoría\ny prioridad (R1.8)" as CU18
+  }
+
+  package "D6 Administración y Seguridad" {
+    usecase "CU-19 Iniciar sesión\n(R10.1)" as CU19
+    usecase "CU-20 Autorizar acceso\npor rol (R3.4)" as CU20
+    usecase "CU-21 Asignar circuitos\ny zonas (R8.1)" as CU21
+  }
+}
+
+' ---------- Asociaciones actor–caso de uso ----------
+OP -- CU01
+OP -- CU19
+AN -- CU06
+AN -- CU19
+AD -- CU21
+AD -- CU19
+SM -- CU12
+MM -- CU12
+TC -- CU17
+
+' ---------- R4: monitoreo ----------
+CU01 ..> CU02 : <<include>>
+CU01 ..> CU03 : <<include>>
+CU01 ..> CU20 : <<include>>
+CU02 ..> CU15 : <<include>>
+CU04 ..> CU01 : <<extend>>\n[operador con\nasignación vigente]
+CU04 ..> CU05 : <<include>>
+
+' ---------- R7: balance y pérdidas ----------
+CU06 ..> CU07 : <<include>>
+CU06 ..> CU08 : <<include>>
+CU06 ..> CU09 : <<include>>
+CU06 ..> CU10 : <<include>>
+CU06 ..> CU11 : <<include>>
+CU06 ..> CU15 : <<include>>
+CU06 ..> CU20 : <<include>>
+
+' ---------- Ingesta y eventos (alimentan R4 y R7) ----------
+CU12 ..> CU13 : <<include>>
+CU12 ..> CU14 : <<include>>
+CU16 ..> CU12 : <<extend>>\n[código de evento\n≠ normal]
+CU17 ..> CU18 : <<include>>
+CU21 ..> CU20 : <<include>>
+
+note bottom of TC
+  Operada por el Técnico de cuadrilla
+  con botones físicos (restricción R2).
+end note
+@enduml

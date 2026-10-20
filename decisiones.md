@@ -24,3 +24,12 @@ Formato de una línea por decisión. Pegar cada bloque en la sección de quien l
 - D-12 · S4: C10 ServicioMapaRed, C11 ActualizadorTiempoReal (WSS), C12 GestorVistaOperador, C13 CatalogoTopologiaRed (PostgreSQL + PostGIS), C14 ConsolaWebCOD · S5: C15 OrquestadorAnaliticaPerdidas, C16 CalculadorBalanceTransformador (MIMD), C17 AgregadorBalanceCircuito
 - D-13 · S6: C18 GestorUsuariosRoles, C19 AutenticadorSesiones, C20 AutorizadorAcceso, C21 GestorAsignaciones · S7: C22 GatewayAPIServicios, C23 CalculadorIndicesCalidad · S8: C24 AplicacionTerminalCampo, C25 ControladorBotonesTerminal
 - D-14 · Protocolos sugeridos para el deployment: MQTT/TLS desde head-end, Kafka/TLS entre componentes, gRPC interno, HTTPS/REST + WSS hacia navegador y APIs, base de series de tiempo (TCP 5432), JDBC a PostgreSQL/PostGIS
+
+## Juan — decisiones (literal A)
+
+- D-J01 · CUC en src/JuanDiegoBalantaMolina_ValeriaPiza_AlejandroRendon_A_CUC.vpp (PDF en PDF/). Límite del sistema: «Plataforma de Telemetría y Análisis de la Red Eléctrica (mqAMI-COD)»; paquetes = dominios D1, D2·D3, D4, D5, D6 de la Fase 1 · lunes 22:15
+- D-J02 · Actores humanos: Operador del COD, Analista de pérdidas, Administrador del sistema · Actores dispositivo con estereotipo «dispositivo» (naranja): Smart Meter, Macromedidor, Terminal de Campo · lunes 22:15
+- D-J03 · 20 casos de uso, cada uno con el ID de su RF atómico: CU-01 (R4.1) incluye CU-02 (R4.2) y CU-03 (R4.3); CU-04 (R9.1) extiende CU-01 [operador con asignación vigente] e incluye CU-05 (R9.2); CU-06 (R7.1) incluye CU-07..CU-11 (R7.6, R7.2, R7.3, R7.4, R7.5); CU-02, CU-08 y CU-09 incluyen CU-15 (R6.3) · lunes 22:15
+- D-J04 · Ingesta y eventos como "demás directamente implicados": CU-12 (R6.1) incluye CU-13 (R12.1) y CU-14 (R6.2); CU-16 (R1.1, R1.2) extiende CU-12 [código de evento ≠ normal]; CU-17 (R1.7) incluye CU-18 (R1.8); además CU-19 Iniciar sesión (R10.1) y CU-21 Asignar circuitos y zonas (R8.1) · lunes 22:15
+- D-J05 · R3.4 (autorizar por rol) NO se dibuja como caso de uso: queda como precondición en la bicolumnar para no mezclar detalle de implementación en el CUC · lunes 22:15
+- D-J06 · La Terminal de Campo es actor dispositivo externo; la app C24 de Valeria es el artefacto que Alejandro despliega en ese nodo · lunes 22:15
