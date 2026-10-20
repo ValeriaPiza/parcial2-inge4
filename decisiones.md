@@ -27,7 +27,7 @@ Formato de una línea por decisión. Pegar cada bloque en la sección de quien l
 
 ## Juan — decisiones (literal A)
 
-- D-J01 · CUC en src/JuanDiegoBalantaMolina_ValeriaPiza_AlejandroRendon_A_CUC.vpp (PDF en PDF/). Límite del sistema: «Plataforma de Telemetría y Análisis de la Red Eléctrica (mqAMI-COD)»; paquetes = dominios D1, D2·D3, D4, D5, D6 de la Fase 1 · lunes 22:15
+- D-J01 · CUC en src/JuanDiegoBalantaMolina_ValeriaPiza_AlejandroRendon_A_CUC.vpp (PDF en PDF/). Límite del sistema: «Plataforma de Telemetría y Análisis de la Red Eléctrica» (igual que la hoja Dorfman F2); paquetes = dominios D1, D2·D3, D4, D5, D6 de la Fase 1 · lunes 22:15
 - D-J02 · Actores humanos: Operador del COD, Analista de pérdidas, Administrador del sistema · Actores dispositivo con estereotipo «dispositivo» (naranja): Smart Meter, Macromedidor, Terminal de Campo · lunes 22:15
 - D-J03 · 20 casos de uso, cada uno con el ID de su RF atómico: CU-01 (R4.1) incluye CU-02 (R4.2) y CU-03 (R4.3); CU-04 (R9.1) extiende CU-01 [operador con asignación vigente] e incluye CU-05 (R9.2); CU-06 (R7.1) incluye CU-07..CU-11 (R7.6, R7.2, R7.3, R7.4, R7.5); CU-02, CU-08 y CU-09 incluyen CU-15 (R6.3) · lunes 22:15
 - D-J04 · Ingesta y eventos como "demás directamente implicados": CU-12 (R6.1) incluye CU-13 (R12.1) y CU-14 (R6.2); CU-16 (R1.1, R1.2) extiende CU-12 [código de evento ≠ normal]; CU-17 (R1.7) incluye CU-18 (R1.8); además CU-19 Iniciar sesión (R10.1) y CU-21 Asignar circuitos y zonas (R8.1) · lunes 22:15
@@ -35,3 +35,16 @@ Formato de una línea por decisión. Pegar cada bloque en la sección de quien l
 - D-J06 · La Terminal de Campo es actor dispositivo externo; la app C24 de Valeria es el artefacto que Alejandro despliega en ese nodo · lunes 22:15
 - D-J07 · R15: dos diagramas de estados en el mismo .vpp. Evento: (inicio) → Registrado → Notificado → En atención → Normalizado → (fin), más Notificado → Normalizado por restablecimiento automático. Sesión: (inicio) → Iniciada → Activa → Cerrada → (fin), con cierre por cerrarSesion() o por inactividad. Componentes que los implementan: C04/C05/C06 y C19/C20/C12 · lunes 23:55
 - D-J08 · Bicolumnar en src/…_A_Bicolumnar_y_Estados.docx (formato del informe de Valeria, continúa la numeración: Parte IV, Parte V, Tabla 9 en adelante, Figura 2 en adelante). Se especifican CU-01 (principal, R4) y CU-06 (primario de R7). % pérdidas no técnicas = (inyectada − consumida) / inyectada × 100 · lunes 23:55
+- D-J09 · Trazabilidad (parte de Juan): en reques.xlsx se agregó la columna L «ID en el CUC (literal A)» en «Dorfman F1» (35/35 RF mapeados) y la columna H «Literal A: CUC y estados (R15)» en «Cobertura R1-R15». Falta la parte de Alejandro (nodo y escenario QAW) · martes 17:10
+- D-J10 · El límite del sistema en el CUC se renombró a «Plataforma de Telemetría y Análisis de la Red Eléctrica», igual que la hoja «Dorfman F2»; Word y PDF regenerados · martes 17:10
+
+## Hallazgos de revisión
+
+Revisión de Juan (con IA) sobre las piezas 0, 1, 2 y B de Valeria, contra la rúbrica. El dueño decide qué corrige.
+
+- H-01 · Criterio 2 · Media · C10 ServicioMapaRed calcula el estado «sospecha de fraude», pero en su tarjeta CRC no colabora con la analítica (C15/C16/C17). Sugerencia: agregar IBalanceCircuito o ICalculoBalanceTransformador como interfaz requerida de C10 (así cuadra con el paso 3 de la bicolumnar de CU-01, donde el fraude sale del % de pérdidas de CU-06).
+- H-02 · Criterio 1 · Decidir · La rúbrica pide clasificar en Sistema/Proceso/Producto; el informe usa Naturaleza (Proceso/Producto) más los pilares Hw/Red/Sw. Sugerencia: una frase en Parte I que diga explícitamente cuáles son «de Sistema» (p. ej. los que involucran hardware, redes y software a la vez: R1, R11, R13) o que la columna de pilares es esa dimensión.
+- H-03 · Criterio 1 · Baja · R9 queda como no RAS. Con 30 operadores concurrentes en tiempo real podría leerse como RAS de rendimiento; basta reforzar en la justificación por qué no condiciona la arquitectura (lo cubre R4).
+- H-04 · Empaquetado · Alta · El informe cita el anexo como JuanDiegoBalantaMolina_ValeriaPiza_AlejandroRendon_0_Clasificacion_Dorfman.xlsx, pero el archivo se llama reques.xlsx y está en la raíz; informe.docx tampoco tiene el prefijo ni está en src/. Renombrar y mover antes del .zip, y exportar ambos a PDF.
+- H-05 · Forma · Baja · En el Excel actualizado las filas 1–2 de cada hoja quedaron vacías (se quitaron los títulos). Cosmético.
+- Verificado sin problemas: 35 RF = 11 macro + 24 sub (19 obligatorios, 5 condicionales), 8 implícitos; partición a tercer nivel (1 sistema, 8 subsistemas, 25 componentes); 25 interfaces provistas y 53 requeridas, todas consistentes entre tarjetas CRC y hoja «Interfaces y Protocolos»; cobertura R1–R15 sin huecos.
