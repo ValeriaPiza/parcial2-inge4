@@ -1,0 +1,5 @@
+# Visual Paradigm
+*.bak_*
+*.lck
+# Office temporales
+~$*
